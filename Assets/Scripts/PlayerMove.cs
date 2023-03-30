@@ -3,32 +3,21 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
     [SerializeField] private float speed;
-    [SerializeField] private float rotatinoSpeed;
-    [SerializeField] private GameObject bulletPrefab;
-
-    private BaseGun _baseGun;
+    [SerializeField] private float rotationSpeed;
+   
     private CharacterController controller;
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
-        _baseGun = new Pistol(10, 2,0.5f , bulletPrefab);
+      
     }
 
     void Update()
     {
         Move();
         MouseRotate();
-        if (Input.GetKeyDown(KeyCode.Mouse0) && _baseGun.currentMagazineSize > 0)
-        {
-            
-            _baseGun.Shoot();
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            _baseGun.Reload();
-        }
-        _baseGun.Update();
+        
     }
 
     public void Move()
@@ -62,7 +51,7 @@ public class PlayerMove : MonoBehaviour
             if (direction.magnitude > 0.1f)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(direction);
-                controller.transform.rotation = Quaternion.Lerp(controller.transform.rotation, targetRotation, Time.deltaTime * rotatinoSpeed);
+                controller.transform.rotation = Quaternion.Lerp(controller.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
             }
         }
     }

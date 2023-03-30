@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Pistol : BaseGun
 {
-    public Pistol(int magazineSize, float reloadTime, float fireRate, GameObject bulletPrefab) : base(magazineSize, reloadTime, fireRate, bulletPrefab) {}
+    public Pistol(int magazineSize, float reloadTime, float fireRate, GameObject bulletPrefab, Transform firePoint) : base(magazineSize, 
+        reloadTime, fireRate, bulletPrefab, firePoint) {}
     
     public override void Shoot()
     {
@@ -12,12 +13,11 @@ public class Pistol : BaseGun
         if (Time.time >= nextFireTime && currentMagazineSize > 0 && isRedyToShoot)
         {
             nextFireTime = Time.time + fireRate;
-            currentMagazineSize--;
+            ChangeAmmo(-1);
             
-            GameObject.Instantiate(bulletPrefab);
+            GameObject.Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
             
             Debug.Log(currentMagazineSize);
-            
         }
          
     }

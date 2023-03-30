@@ -4,13 +4,21 @@ using UnityEngine;
 
 public class AutomaticGun : BaseGun
 {
-    public AutomaticGun(int magazineSize, float reloadTime, float fireRate, GameObject bulletPrefab) : base(magazineSize, reloadTime, fireRate, bulletPrefab)
-    {
-    }
+    public AutomaticGun(int magazineSize, float reloadTime, float fireRate, GameObject bulletPrefab, Transform firePoint) : base(magazineSize, 
+        reloadTime, fireRate, bulletPrefab, firePoint) {}
 
     public override void Shoot()
     {
-        throw new System.NotImplementedException();
+        if (Time.time >= nextFireTime && currentMagazineSize > 0 && isRedyToShoot)
+        {
+            nextFireTime = Time.time + fireRate;
+            ChangeAmmo(-1);
+            
+            GameObject.Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            
+            Debug.Log(currentMagazineSize);
+            
+        }
     }
 }
 
