@@ -1,11 +1,9 @@
-
-
 using UnityEngine;
 
 public class Pistol : BaseGun
 {
-    public Pistol(int magazineSize, float reloadTime, float fireRate, GameObject bulletPrefab, Transform firePoint) : base(magazineSize, 
-        reloadTime, fireRate, bulletPrefab, firePoint) {}
+    public Pistol(int magazineSize, float reloadTime, float fireRate, GameObject bulletPrefab, GameObject gunPrefab) : base(magazineSize, 
+        reloadTime, fireRate, bulletPrefab, gunPrefab) {}
     
     public override void Shoot()
     {
@@ -15,7 +13,7 @@ public class Pistol : BaseGun
             nextFireTime = Time.time + fireRate;
             ChangeAmmo(-1);
             
-            GameObject.Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            GameObject.Instantiate(bulletPrefab, firePoint.transform.position, firePoint.transform.rotation);
             
             Debug.Log(currentMagazineSize);
         }

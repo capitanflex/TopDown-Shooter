@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AutomaticGun : BaseGun
 {
-    public AutomaticGun(int magazineSize, float reloadTime, float fireRate, GameObject bulletPrefab, Transform firePoint) : base(magazineSize, 
-        reloadTime, fireRate, bulletPrefab, firePoint) {}
+    public AutomaticGun(int magazineSize, float reloadTime, float fireRate, GameObject bulletPrefab,  GameObject gunPrefab) : base(magazineSize, 
+        reloadTime, fireRate, bulletPrefab,  gunPrefab) {}
 
     public override void Shoot()
     {
@@ -14,9 +12,9 @@ public class AutomaticGun : BaseGun
             nextFireTime = Time.time + fireRate;
             ChangeAmmo(-1);
             
-            GameObject.Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            GameObject.Instantiate(bulletPrefab, firePoint.transform.position, firePoint.transform.rotation);
             
-            Debug.Log(currentMagazineSize);
+            
             
         }
     }

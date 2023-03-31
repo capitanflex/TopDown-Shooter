@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -15,18 +13,20 @@ public abstract class BaseGun
    protected bool isReloading;
    
    protected GameObject bulletPrefab;
-   protected Transform firePoint;
+   protected GameObject gunPrefab;
+   protected GameObject firePoint;
   
    
 
 
-   public BaseGun(int magazineSize, float reloadTime, float fireRate, GameObject bulletPrefab, Transform firePoint)
+   public BaseGun(int magazineSize, float reloadTime, float fireRate, GameObject bulletPrefab, GameObject gunPrefab)
    {
       this.magazineSize = magazineSize;
       this.fireRate = fireRate;
       this.reloadTime = reloadTime;
       this.bulletPrefab = bulletPrefab;
-      this.firePoint = firePoint;
+      firePoint = gunPrefab.transform.Find("firePoint").gameObject;
+      Debug.Log(firePoint.transform.position);
       currentMagazineSize = this.magazineSize;
    }
    public abstract void Shoot();

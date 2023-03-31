@@ -1,17 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerGuns : MonoBehaviour
 {
     [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private Transform firePoint;
+    [SerializeField] private GameObject gunPrefab;
+    [SerializeField] private Transform gunPoint;
+    [SerializeField] private GunParams pistol;
+    [SerializeField] private GunParams automat;
 
+    private GameObject currentGun;
     private BaseGun _baseGun;
     void Start()
     {
-        // _baseGun = new Pistol(10, 2,0.5f , bulletPrefab, firePoint);
-        _baseGun = new AutomaticGun(30, 2.5f,0.05f , bulletPrefab, firePoint);
+        currentGun = Instantiate(gunPrefab, gunPoint.position, transform.rotation);
+        currentGun.transform.SetParent(gameObject.transform);
+        _baseGun = new Pistol(pistol.magazineSize, pistol.reloadTime,pistol.fireRate , pistol.bulletPrefab, pistol.gunPrefab);
+        
     }
 
     void Update()
@@ -32,11 +36,20 @@ public class PlayerGuns : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            _baseGun = new Pistol(10, 2,0.5f , bulletPrefab, firePoint);
+            Destroy(currentGun);
+            currentGun = Instantiate( pistol.gunPrefab, gunPoint.position, transform.rotation);
+            currentGun.transform.SetParent(gameObject.transform);
+            _baseGun = new Pistol(pistol.magazineSize, pistol.reloadTime,pistol.fireRate , pistol.bulletPrefab, pistol.gunPrefab);
+            
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            _baseGun = new AutomaticGun(30, 2.5f,0.05f , bulletPrefab, firePoint);
+            Destroy(currentGun);
+            currentGun = Instantiate( automat.gunPrefab, gunPoint.position, transform.rotation);
+            currentGun.transform.SetParent(gameObject.transform);
+            _baseGun = new AutomaticGun(automat.magazineSize, automat.reloadTime,automat.fireRate , automat.bulletPrefab, automat.gunPrefab);
+            
+            
         }
     }
     
