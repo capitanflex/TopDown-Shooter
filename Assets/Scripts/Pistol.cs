@@ -14,8 +14,6 @@ public class Pistol : BaseGun
             ChangeAmmo(-1);
             
             GameObject.Instantiate(bulletPrefab, firePoint.transform.position, firePoint.transform.rotation);
-            
-            Debug.Log(currentMagazineSize);
         }
          
     }

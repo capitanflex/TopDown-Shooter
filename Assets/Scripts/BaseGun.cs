@@ -26,7 +26,6 @@ public abstract class BaseGun
       this.reloadTime = reloadTime;
       this.bulletPrefab = bulletPrefab;
       firePoint = gunPrefab.transform.Find("firePoint").gameObject;
-      Debug.Log(firePoint.transform.position);
       currentMagazineSize = this.magazineSize;
    }
    public abstract void Shoot();

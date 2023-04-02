@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Sprites;
 
 public class PlayerGuns : MonoBehaviour
 {
@@ -10,12 +12,15 @@ public class PlayerGuns : MonoBehaviour
 
     private GameObject currentGun;
     private BaseGun _baseGun;
+
+    public Image gunIcon;
+    
     void Start()
     {
         currentGun = Instantiate(gunPrefab, gunPoint.position, transform.rotation);
         currentGun.transform.SetParent(gameObject.transform);
         _baseGun = new Pistol(pistol.magazineSize, pistol.reloadTime,pistol.fireRate , pistol.bulletPrefab, pistol.gunPrefab);
-        
+        gunIcon = GameObject.Find("GunIcon").GetComponent<Image>();
     }
 
     void Update()
@@ -40,7 +45,7 @@ public class PlayerGuns : MonoBehaviour
             currentGun = Instantiate( pistol.gunPrefab, gunPoint.position, transform.rotation);
             currentGun.transform.SetParent(gameObject.transform);
             _baseGun = new Pistol(pistol.magazineSize, pistol.reloadTime,pistol.fireRate , pistol.bulletPrefab, pistol.gunPrefab);
-            
+            gunIcon.sprite = pistol.icon;
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
@@ -48,8 +53,7 @@ public class PlayerGuns : MonoBehaviour
             currentGun = Instantiate( automat.gunPrefab, gunPoint.position, transform.rotation);
             currentGun.transform.SetParent(gameObject.transform);
             _baseGun = new AutomaticGun(automat.magazineSize, automat.reloadTime,automat.fireRate , automat.bulletPrefab, automat.gunPrefab);
-            
-            
+            gunIcon.sprite = automat.icon;
         }
     }
     
