@@ -1,19 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public abstract class EnemyBehaviour 
 {
     protected float healthPoint;
-    protected float damage;
+    protected float currentHealthPointEnemy;
+    public float damage;
     protected float zombieMovement;
-
-    protected float timeAttackDelay;
-    protected float timerAttackDelay;
+    
     protected bool canLookAtPlayer;
-
-    protected GameObject prefabZombie;
+    protected RaycastHit hit;
+    protected float rayCastDistance = 500;
 
     protected float rangeChase;
     protected float rangeStopping;
@@ -29,11 +26,10 @@ public abstract class EnemyBehaviour
     public Animator animator;
     
 
-    public EnemyBehaviour(float healthPoint, float damage, float timeAttackDelay, float zombieMovement, float rangeChase, float rangeAttack, float rangeStopping, Animator animator, NavMeshAgent agent)
+    public EnemyBehaviour(float healthPoint, float damage, float zombieMovement, float rangeChase, float rangeAttack, float rangeStopping, Animator animator, NavMeshAgent agent)
     {
         this.healthPoint = healthPoint;
         this.damage = damage;
-        this.timeAttackDelay = timeAttackDelay;
         this.zombieMovement = zombieMovement;
         this.rangeAttack = rangeAttack;
         this.rangeChase = rangeChase;
@@ -42,27 +38,15 @@ public abstract class EnemyBehaviour
         this.rangeStopping = rangeStopping;
     }
     
-    // public abstract void Attack();
-    
+    public abstract void Attack();
     public abstract void ChangeState();
+    public abstract void EnemyCanSeePlayer();
+    public abstract void GetDamage(float damage);
+
+    public abstract void Start();
 
     public void Find()
     {
-        player = GameObject.Find("Player");
-        
+        player = GameObject.FindGameObjectWithTag("Player");
     }
-    
-    
-    // protected void AttackingDelay()
-    // {
-    //     if(timerAttackDelay <= 0) {
-    //         canAttack = true;
-    //     }
-    //     else {
-    //         timerAttackDelay -= Time.deltaTime;
-    //         canAttack = false;
-    //     }
-    // }
-
-    
 }

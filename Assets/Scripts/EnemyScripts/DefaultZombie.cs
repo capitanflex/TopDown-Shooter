@@ -1,32 +1,46 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class DefaultZombie : EnemyBehaviour
 {
-    public DefaultZombie(float healthPoint, float damage, float timeAttackDelay, float zombieMovement, float rangePatrolling, float rangeAttack,float rangeStopping, Animator animator, NavMeshAgent agent)
-        : base(healthPoint, damage, timeAttackDelay, zombieMovement, rangePatrolling, rangeAttack, rangeStopping, animator, agent){}
+    public DefaultZombie(float healthPoint, float damage, float zombieMovement, float rangePatrolling, float rangeAttack,float rangeStopping, Animator animator, NavMeshAgent agent)
+        : base(healthPoint, damage, zombieMovement, rangePatrolling, rangeAttack, rangeStopping, animator, agent){}
+    
 
-   
-    // public override void Attack()
-    // {
-    //     if (canAttack)
-    //     {
-    //         AttackingDelay();
-    //     }
-    // }
+    public override void EnemyCanSeePlayer()
+    {
+        if (Physics.Raycast(agent.transform.position, player.transform.position, out hit, rayCastDistance))
+        {
+            if (hit.collider.gameObject.CompareTag("Player"))
+            {
+                canLookAtPlayer = true;
+            }
+        }
+    }
+
+    public override void GetDamage(float damage)
+    {
+        currentHealthPointEnemy -= damage;
+    }
+
+    public override void Start()
+    {
+        currentHealthPointEnemy = healthPoint;
+    }
+
+    public override void Attack()
+    {
+        player.GetComponent<HealthPlayer>().GetDamage(damage);
+    }
 
     public override void ChangeState()
     {
-        
         distanceToPlayer = Vector3.Distance(player.transform.position, agent.transform.position);
         directionToPlayer = new Vector3(player.transform.position.x - agent.transform.position.x, 
             player.transform.position.y - agent.transform.position.y, 
             player.transform.position.z - agent.transform.position.z);
 
-        if (distanceToPlayer <= rangeChase)
+        if (distanceToPlayer <= rangeChase && canLookAtPlayer)
         {
             isChasing = true;
             
@@ -36,6 +50,7 @@ public class DefaultZombie : EnemyBehaviour
         else if(distanceToPlayer >= rangeStopping)
         {
             isChasing = false;
+            canLookAtPlayer = false;
         }
 
         if (isChasing) { EnemyChasing(); }

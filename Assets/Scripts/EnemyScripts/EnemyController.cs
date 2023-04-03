@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -19,15 +15,20 @@ public class EnemyController : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-        player = GameObject.Find("Player");
-        enemyBehaviour = new DefaultZombie(enemyParametrs.healthPoint, enemyParametrs.damage, enemyParametrs.timeAttackDelay,
-            enemyParametrs.zombieMovement, enemyParametrs.rangeChase, enemyParametrs.rangeAttack, enemyParametrs.rangeStopping, animator, agent);
-        
+        enemyBehaviour = new DefaultZombie(enemyParametrs.healthPoint, enemyParametrs.damage, enemyParametrs.zombieMovement, 
+            enemyParametrs.rangeChase, enemyParametrs.rangeAttack, enemyParametrs.rangeStopping, animator, agent);
+        enemyBehaviour.Find();
+        enemyBehaviour.Start();
     }
 
     protected void Update()
     {
-        enemyBehaviour.Find();
+        enemyBehaviour.EnemyCanSeePlayer();
         enemyBehaviour.ChangeState();
+    }
+
+    public void Attack()
+    {
+        enemyBehaviour.Attack();
     }
 }
