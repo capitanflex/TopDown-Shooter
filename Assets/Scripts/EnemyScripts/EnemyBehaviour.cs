@@ -17,6 +17,7 @@ public abstract class EnemyBehaviour
     protected float rangeAttack;
     protected bool isChasing;
     protected bool isAttacking;
+    protected bool isDead;
 
     public GameObject player;
     public float distanceToPlayer;
@@ -39,14 +40,87 @@ public abstract class EnemyBehaviour
     }
     
     public abstract void Attack();
-    public abstract void ChangeState();
-    public abstract void EnemyCanSeePlayer();
     public abstract void GetDamage(float damage);
-
     public abstract void Start();
+    
+    public void EnemyCanSeePlayer()
+    {
+        if (Physics.Raycast(agent.transform.position, directionToPlayer, out hit, rayCastDistance))
+        {
+            if (hit.collider.gameObject.CompareTag("Player") && !isDead)
+            {
+                canLookAtPlayer = true;
+            }
+        }
+    }
+    
+    public void ChangeState()
+    {
+        distanceToPlayer = Vector3.Distance(player.transform.position, agent.transform.position);
+        directionToPlayer = new Vector3(player.transform.position.x - agent.transform.position.x, 
+            player.transform.position.y - agent.transform.position.y, 
+            player.transform.position.z - agent.transform.position.z);
+
+        if (distanceToPlayer <= rangeChase && canLookAtPlayer)
+        {
+            isChasing = true;
+            
+            if (distanceToPlayer <= rangeAttack + 0.5f) { isAttacking = true; isChasing = false;}
+            else { isAttacking = false; }
+        }
+        else if(distanceToPlayer >= rangeStopping)
+        {
+            isChasing = false;
+            canLookAtPlayer = false;
+        }
+
+        if (isChasing) { EnemyChasing(); }
+        if (isAttacking) { EnemyAttacking(); }
+        if (!isAttacking && !isChasing){ EnemyStay();}
+    }
+    
+    private void EnemyChasing()
+    {
+        agent.SetDestination(player.transform.position);
+        agent.speed = zombieMovement;
+        animator.SetBool("isStaying", false);
+        animator.SetBool("isChasing", true);
+        animator.SetBool("isAttacking", false);
+        agent.isStopped = false;
+    }
+
+    protected void EnemyAttacking()
+    {
+        agent.Stop();
+        agent.stoppingDistance = rangeAttack;
+        animator.SetBool("isAttacking", true);
+        animator.SetBool("isChasing", false);
+        Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+        targetRotation.x = 0f;
+        targetRotation.z = 0f;
+        agent.transform.rotation = Quaternion.Lerp(agent.transform.rotation ,targetRotation, 50);
+    }
+
+    private void EnemyStay()
+    {
+        animator.SetBool("isStaying", true);
+        animator.SetBool("isChasing", false);
+        agent.isStopped = true;
+    }
+
+    private void Death()
+    {
+        animator.SetBool("isStaying", false);
+        animator.SetBool("isChasing", false);
+        animator.SetBool("isAttacking", false);
+        animator.SetBool("isDead", true);
+        isDead = true;
+        zombieMovement = 0;
+    }
 
     public void Find()
     {
         player = GameObject.FindGameObjectWithTag("Player");
     }
+    
 }

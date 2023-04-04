@@ -15,7 +15,7 @@ MonoBehaviour:
   healthPoint: 100
   damage: 20
   timeAttackDelay: 0.5
-  zombieMovement: 5
+  zombieMovement: 6
   rangeAttack: 2
   rangeChase: 6
   rangeStopping: 15

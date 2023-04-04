@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f330e985fdba654e9d47f6d3e20b1d0, type: 3}
   m_Name: TwinsMonster
   m_EditorClassIdentifier: 
-  healthPoint: 0
-  damage: 0
+  healthPoint: 50
+  damage: 20
   timeAttackDelay: 0
-  zombieMovement: 0
-  rangeAttack: 0
-  rangeChase: 0
-  rangeStopping: 0
+  zombieMovement: 2
+  rangeAttack: 2
+  rangeChase: 6
+  rangeStopping: 10

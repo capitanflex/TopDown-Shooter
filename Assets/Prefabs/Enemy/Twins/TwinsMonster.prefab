@@ -141,5 +141,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyParametrs: {fileID: 11400000, guid: d427096dd99c9054cb33ce29e184c70f, type: 2}
+  zombieType: 1
   agent: {fileID: 4134739887012722372}
   animator: {fileID: 4134739887012722373}
