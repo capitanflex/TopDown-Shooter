@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "New GunParameters", menuName = "GunParameters", order = 51)]
 public class GunParams : ScriptableObject
@@ -9,4 +10,6 @@ public class GunParams : ScriptableObject
     public float fireRate;
     public GameObject bulletPrefab;
     public GameObject gunPrefab;
+
+    public Sprite icon;
 }
