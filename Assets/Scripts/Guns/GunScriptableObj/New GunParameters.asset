@@ -18,3 +18,4 @@ MonoBehaviour:
   fireRate: 0.08
   bulletPrefab: {fileID: 6676171404903797827, guid: d84ef177f62c25e40b74ec9c295d2ae5, type: 3}
   gunPrefab: {fileID: 7757117112953619634, guid: 7b19322a2c8dd50439e70d11a0a006bd, type: 3}
+  icon: {fileID: 21300000, guid: 67f8b97318125224692cfcc663d9bf9f, type: 3}
