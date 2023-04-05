@@ -3,56 +3,81 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
     [SerializeField] private float speed;
+    [SerializeField] private float jumpForce;
+    [SerializeField] private float mouseSensitivity = 3f;
     [SerializeField] private float rotationSpeed;
-   
+    [SerializeField] private Animator animator;
+
+    [SerializeField] private GameObject spine;
+    
+    private Vector3 moveDirection;
+    private float verticalVelocity = 0f; 
+    private float mouseX = 0f; 
+    private float mouseY = 0f;
     private CharacterController controller;
+    private Camera cam;
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
-      
+        cam = GetComponentInChildren<Camera>();
+        Cursor.lockState = CursorLockMode.Locked;
+        
     }
 
     void Update()
     {
-        Move();
         MouseRotate();
-        
+        Jump();
+        Move();
     }
 
     public void Move()
     {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
         
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-       
-        if (movement.magnitude > 1.0f)
-            movement.Normalize();
+        animator.SetFloat("speedVertical", vertical);
+        animator.SetFloat("speedHorizontal", horizontal);
         
-        movement *= speed * Time.deltaTime;
-        controller.Move(movement);
+        Vector3 moveHorizontal = transform.right * horizontal;
+        Vector3 moveVertical = transform.forward * vertical;
+        moveDirection = moveHorizontal + moveVertical;
+        moveDirection.Normalize();
+        moveDirection *= speed;
+
+        controller.Move(moveDirection * Time.deltaTime);
     }
 
     public void MouseRotate()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Plane plane = new Plane(Vector3.up, transform.position);
-        float distance;
+        mouseX += Input.GetAxis("Mouse X") * mouseSensitivity;
+        mouseY -= Input.GetAxis("Mouse Y") * mouseSensitivity;
+        mouseY = Mathf.Clamp(mouseY, -90f, 90f);
+        transform.rotation = Quaternion.Euler(0f, mouseX, 0f);
+        // cam.transform.localRotation = Quaternion.Euler(mouseY, 0f, 0.01f);
         
-        if (plane.Raycast(ray, out distance))
+        // float xAngle = Camera.main.transform.eulerAngles.x;
+        // if (xAngle > 180) xAngle -= 360;
+        // xAngle = Mathf.Clamp(xAngle, -90f, 90f);
+        // print(xAngle);
+        spine.transform.localEulerAngles = new(mouseY, 0f, 0f);
+    }
+
+    private void Jump()
+    {
+        if (controller.isGrounded)
         {
-            Vector3 targetPoint = ray.GetPoint(distance);
-            
-            Vector3 direction = targetPoint - transform.position;
-            direction.y = 0;
-            direction.Normalize();
-            
-            if (direction.magnitude > 0.1f)
+            if (Input.GetButtonDown("Jump"))
             {
-                Quaternion targetRotation = Quaternion.LookRotation(direction);
-                controller.transform.rotation = Quaternion.Lerp(controller.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+                verticalVelocity = jumpForce;
             }
         }
+        else
+        {
+            verticalVelocity += Physics.gravity.y * Time.deltaTime;
+        }
+        
+        moveDirection.y = verticalVelocity;
     }
 }

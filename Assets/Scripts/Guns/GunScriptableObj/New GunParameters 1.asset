@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55ca27bebeb5a23448cc958ae77847a7, type: 3}
+  m_Name: New GunParameters 1
+  m_EditorClassIdentifier: 
+  currentMagazineSize: 0
+  magazineSize: 10
+  reloadTime: 2
+  fireRate: 0.5
+  bulletPrefab: {fileID: 6676171404903797827, guid: d84ef177f62c25e40b74ec9c295d2ae5, type: 3}
+  gunPrefab: {fileID: 7778639695666942125, guid: 70e9f4e23c856fb47aa2d278c26899c5, type: 3}
